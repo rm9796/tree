@@ -1,0 +1,32 @@
+@import '~asset/style/variables';
+
+.tree-container {
+  @extend %header_h4;
+  .parents {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem;
+  }
+  .my-node {
+    border-radius: 2%;
+    margin: 0.5rem 1rem;
+    width: 20rem;
+    height: 5rem;
+    display: flex;
+    align-items: center;
+
+    &.male {
+      background-color: lightblue;
+    }
+    &.female {
+      background-color: lightpink;
+    }
+    &__icon {
+      margin: 0 1rem;
+    }
+  }
+  .children-list {
+    display: flex;
+  }
+}

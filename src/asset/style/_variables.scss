@@ -1,0 +1,10 @@
+$black_500: #1f1f1f;
+$text_black_color: $black_500;
+
+$medium_font_stack: 'Roboto Medium', Arial, Helvetica, sans-serif;
+%header_h4 {
+  font-size: 1.8rem;
+  font-family: $medium_font_stack;
+  font-weight: 500;
+  color: $text_black_color;
+}
