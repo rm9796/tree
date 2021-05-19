@@ -22,7 +22,7 @@ export const PersonNode = ({
   getChild,
 }: PersonNodeProps) => {
   const MySpouse = useMemo(() => {
-    if (myChildren.length && !isSpouse) {
+    if (myChildren && myChildren.length && !isSpouse) {
       return (
         <PersonNode
           {...(getSpouse(id) as SpouseNode)}
@@ -35,7 +35,7 @@ export const PersonNode = ({
   }, [getChild, getSpouse, id, isSpouse, myChildren]);
 
   const ChildrenList = useMemo(() => {
-    if (myChildren.length && !isSpouse) {
+    if (myChildren && myChildren.length && !isSpouse) {
       return myChildren.map((childId) => {
         const childData = getChild(childId);
         if (childData) {
