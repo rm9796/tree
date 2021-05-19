@@ -1,24 +1,31 @@
-import React, { useMemo } from 'react';
+import { useMemo, Fragment } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import './PersonNode.scss';
+import { SpouseNode, RenderNode } from 'types';
 export interface PersonNodeProps {
   id: number;
   name: string;
   myChildren: number[];
   gender: string;
   isSpouse: boolean;
-  getSpouse: (id: number) => any;
-  getChild: (id: number) => any;
+  getSpouse: (id: number) => SpouseNode | null;
+  getChild: (id: number) => RenderNode | null;
 }
 
-export const PersonNode = (props: PersonNodeProps) => {
-  const { name, id, myChildren, gender, isSpouse, getSpouse, getChild } = props;
-
+export const PersonNode = ({
+  id,
+  name,
+  myChildren,
+  gender,
+  isSpouse,
+  getSpouse,
+  getChild,
+}: PersonNodeProps) => {
   const MySpouse = useMemo(() => {
-    if (myChildren && myChildren.length !== 0 && !isSpouse) {
+    if (myChildren.length && !isSpouse) {
       return (
         <PersonNode
-          {...getSpouse(id)}
+          {...(getSpouse(id) as SpouseNode)}
           getChild={getChild}
           getSpouse={getSpouse}
         />
@@ -28,16 +35,18 @@ export const PersonNode = (props: PersonNodeProps) => {
   }, [getChild, getSpouse, id, isSpouse, myChildren]);
 
   const ChildrenList = useMemo(() => {
-    if (myChildren && myChildren.length !== 0 && !isSpouse) {
+    if (myChildren.length && !isSpouse) {
       return myChildren.map((childId) => {
         const childData = getChild(childId);
         if (childData) {
           return (
-            <PersonNode
-              {...getChild(childId)}
-              getChild={getChild}
-              getSpouse={getSpouse}
-            />
+            <Fragment key={childId}>
+              <PersonNode
+                {...(getChild(childId) as RenderNode)}
+                getChild={getChild}
+                getSpouse={getSpouse}
+              />
+            </Fragment>
           );
         }
         return null;
@@ -48,28 +57,18 @@ export const PersonNode = (props: PersonNodeProps) => {
 
   return (
     <div className='tree-container'>
-      {isSpouse ? (
-        <>
-          <div className={`my-node ${gender === 'male' ? 'male' : 'female'}`}>
-            <span className='my-node__icon'>
-              <FontAwesomeIcon icon='user' />
-            </span>
-            <span className='my-node__text'>{name}</span>
-          </div>
-          {MySpouse}
-        </>
-      ) : (
-        <div className='parents'>
-          <div className={`my-node ${gender === 'male' ? 'male' : 'female'}`}>
-            <span className='my-node__icon'>
-              <FontAwesomeIcon icon='user' />
-            </span>
-            <span className='my-node__text'>{name}</span>
-          </div>
-          {MySpouse}
+      <div className='parents'>
+        <div className={`my-node ${gender === 'male' ? 'male' : 'female'}`}>
+          <span className='my-node__icon'>
+            <FontAwesomeIcon icon='user' />
+          </span>
+          <span className='my-node__text'>{name}</span>
         </div>
-      )}
-      {isSpouse ? null : <div className='children-list'>{ChildrenList}</div>}
+        {MySpouse}
+      </div>
+      {isSpouse
+        ? null
+        : ChildrenList && <div className='children-list'>{ChildrenList}</div>}
     </div>
   );
 };

@@ -6,14 +6,14 @@ export interface FamilyNode {
   parents: number[];
 }
 
-export interface ChildNode {
+export interface RenderNode {
   id: number;
   name: string;
-  myChildren: number[];
   gender: string;
+  myChildren: number[];
   isSpouse: boolean;
 }
 
-export interface SpouseNode extends ChildNode {
+export interface SpouseNode extends RenderNode {
   parents: number[];
 }
